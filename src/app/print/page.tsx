@@ -1,14 +1,7 @@
 "use client";
 
 import { useState } from "react";
-
-function formatFileSize(bytes: number) {
-  if (bytes < 1024 * 1024) {
-    return `${(bytes / 1024).toFixed(1)} KB`;
-  }
-
-  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
-}
+import UploadBox from "@/components/print/UploadBox";
 
 export default function PrintPage() {
   const [file, setFile] = useState<File | null>(null);
@@ -19,7 +12,11 @@ export default function PrintPage() {
   const [instructions, setInstructions] = useState("");
 
   const handleFile = (selectedFile: File) => {
-    const allowedTypes = ["application/pdf", "image/png", "image/jpeg"];
+    const allowedTypes = [
+      "application/pdf",
+      "image/png",
+      "image/jpeg",
+    ];
 
     if (!allowedTypes.includes(selectedFile.type)) {
       alert("Please select a PDF, PNG, or JPG file.");
@@ -40,7 +37,9 @@ export default function PrintPage() {
     <main className="min-h-screen bg-[#0A0A0F] text-[#F4F4F6]">
       <div className="mx-auto max-w-4xl px-6 py-12">
         {/* Header */}
-        <p className="text-sm font-medium text-[#A5ADFF]">PrintShop</p>
+        <p className="text-sm font-medium text-[#A5ADFF]">
+          PrintShop
+        </p>
 
         <h1 className="mt-3 text-3xl font-medium tracking-tight">
           Create a print order
@@ -51,100 +50,26 @@ export default function PrintPage() {
         </p>
 
         {/* Upload area */}
-        <div
-          className={`mt-10 rounded-2xl border border-dashed bg-[#16161D] px-6 py-14 text-center transition-colors ${
-            isDragging
-              ? "border-[#6366F1] bg-[#1C1B2E]"
-              : "border-[#2A2A35] hover:border-[#3A38C8]"
-          }`}
-          onDragOver={(event) => {
-            event.preventDefault();
-            setIsDragging(true);
-          }}
-          onDragLeave={() => {
-            setIsDragging(false);
-          }}
-          onDrop={(event) => {
-            event.preventDefault();
-            setIsDragging(false);
-
-            const droppedFile = event.dataTransfer.files[0];
-
-            if (!droppedFile) {
-              return;
-            }
-
-            handleFile(droppedFile);
-          }}
-        >
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#1C1B2E]">
-            <span className="text-xl text-[#A5ADFF]">↑</span>
-          </div>
-
-          <p className="mt-5 text-lg font-medium text-[#F4F4F6]">
-            Upload your document
-          </p>
-
-          <p className="mt-2 text-sm text-[#9CA0AE]">
-            Drag and drop your file here, or choose a file
-          </p>
-
-          <p className="mt-1 text-xs text-[#6B6F7E]">
-            PDF, PNG, JPG · Maximum 20 MB
-          </p>
-
-          <label className="mt-6 inline-block cursor-pointer rounded-lg bg-[#6366F1] px-5 py-2.5 text-sm font-medium text-[#0A0A0F] transition-opacity hover:opacity-90">
-            Choose file
-            <input
-              type="file"
-              accept=".pdf,.png,.jpg,.jpeg"
-              className="hidden"
-              onChange={(event) => {
-                const selectedFile = event.target.files?.[0];
-
-                if (!selectedFile) {
-                  return;
-                }
-
-                handleFile(selectedFile);
-              }}
-            />
-          </label>
-
-          {/* Selected file */}
-          {file && (
-            <div className="mx-auto mt-6 flex max-w-md items-center justify-between rounded-lg border border-[#1F1F27] bg-[#0A0A0F] px-4 py-3">
-              <div className="min-w-0 text-left">
-                <p className="truncate text-sm font-medium text-[#F4F4F6]">
-                  {file.name}
-                </p>
-
-                <p className="mt-1 text-xs text-[#6B6F7E]">
-                  {file.type === "application/pdf" ? "PDF" : "Image"} ·{" "}
-                  {formatFileSize(file.size)}
-                </p>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => setFile(null)}
-                className="ml-4 shrink-0 text-xs text-[#9CA0AE] hover:text-[#F4F4F6]"
-              >
-                Remove
-              </button>
-            </div>
-          )}
-        </div>
+        <UploadBox
+          file={file}
+          isDragging={isDragging}
+          onFileSelect={handleFile}
+          onRemoveFile={() => setFile(null)}
+          onDragStart={() => setIsDragging(true)}
+          onDragEnd={() => setIsDragging(false)}
+        />
 
         {/* Print settings */}
         <div className="mt-6 rounded-2xl border border-[#1F1F27] bg-[#16161D] p-6">
-          <p className="text-sm font-medium text-[#A5ADFF]">Print settings</p>
+          <p className="text-sm font-medium text-[#A5ADFF]">
+            Print settings
+          </p>
 
           <h2 className="mt-2 text-lg font-medium text-[#F4F4F6]">
             How many copies?
           </h2>
 
-          {/*coopies selection button */}
+          {/* Copies selection button */}
           <div className="mt-4 flex items-center gap-3">
             <button
               type="button"
@@ -166,9 +91,12 @@ export default function PrintPage() {
               +
             </button>
           </div>
-          {/*colour selection*/}
+
+          {/* Colour selection */}
           <div className="mt-8">
-            <h3 className="text-sm font-medium text-[#F4F4F6]">Color</h3>
+            <h3 className="text-sm font-medium text-[#F4F4F6]">
+              Color
+            </h3>
 
             <div className="mt-3 grid gap-3 sm:grid-cols-2">
               <button
@@ -198,7 +126,9 @@ export default function PrintPage() {
                     : "border-[#2A2A35] hover:border-[#3A38C8]"
                 }`}
               >
-                <p className="text-sm font-medium text-[#F4F4F6]">Color</p>
+                <p className="text-sm font-medium text-[#F4F4F6]">
+                  Color
+                </p>
 
                 <p className="mt-1 text-xs text-[#9CA0AE]">
                   Full-color printing
@@ -206,9 +136,12 @@ export default function PrintPage() {
               </button>
             </div>
           </div>
-          {/*paper size */}
+
+          {/* Paper size */}
           <div className="mt-8">
-            <h3 className="text-sm font-medium text-[#F4F4F6]">Paper size</h3>
+            <h3 className="text-sm font-medium text-[#F4F4F6]">
+              Paper size
+            </h3>
 
             <div className="mt-3 grid gap-3 sm:grid-cols-2">
               <button
@@ -220,7 +153,9 @@ export default function PrintPage() {
                     : "border-[#2A2A35] hover:border-[#3A38C8]"
                 }`}
               >
-                <p className="text-sm font-medium text-[#F4F4F6]">A4</p>
+                <p className="text-sm font-medium text-[#F4F4F6]">
+                  A4
+                </p>
 
                 <p className="mt-1 text-xs text-[#9CA0AE]">
                   Standard document size
@@ -236,7 +171,9 @@ export default function PrintPage() {
                     : "border-[#2A2A35] hover:border-[#3A38C8]"
                 }`}
               >
-                <p className="text-sm font-medium text-[#F4F4F6]">A3</p>
+                <p className="text-sm font-medium text-[#F4F4F6]">
+                  A3
+                </p>
 
                 <p className="mt-1 text-xs text-[#9CA0AE]">
                   Larger paper format
@@ -244,7 +181,8 @@ export default function PrintPage() {
               </button>
             </div>
           </div>
-          {/*instructions*/}
+
+          {/* Instructions */}
           <div className="mt-8">
             <label
               htmlFor="instructions"
@@ -260,16 +198,21 @@ export default function PrintPage() {
             <textarea
               id="instructions"
               value={instructions}
-              onChange={(event) => setInstructions(event.target.value)}
+              onChange={(event) =>
+                setInstructions(event.target.value)
+              }
               placeholder="e.g. Print pages 1–5, double-sided..."
               rows={4}
               className="mt-3 w-full resize-none rounded-lg border border-[#2A2A35] bg-[#0A0A0F] px-4 py-3 text-sm text-[#F4F4F6] outline-none placeholder:text-[#6B6F7E] focus:border-[#6366F1]"
             />
           </div>
         </div>
-        {/*order summary */}
+
+        {/* Order summary */}
         <div className="mt-6 rounded-2xl border border-[#1F1F27] bg-[#16161D] p-6">
-          <p className="text-sm font-medium text-[#A5ADFF]">Order summary</p>
+          <p className="text-sm font-medium text-[#A5ADFF]">
+            Order summary
+          </p>
 
           <h2 className="mt-2 text-lg font-medium text-[#F4F4F6]">
             Review your print order
@@ -278,7 +221,9 @@ export default function PrintPage() {
           <div className="mt-6 space-y-4">
             {/* Document */}
             <div className="flex items-start justify-between gap-4">
-              <span className="text-sm text-[#9CA0AE]">Document</span>
+              <span className="text-sm text-[#9CA0AE]">
+                Document
+              </span>
 
               <span className="max-w-xs truncate text-right text-sm text-[#F4F4F6]">
                 {file ? file.name : "No file selected"}
@@ -287,14 +232,20 @@ export default function PrintPage() {
 
             {/* Copies */}
             <div className="flex items-center justify-between gap-4">
-              <span className="text-sm text-[#9CA0AE]">Copies</span>
+              <span className="text-sm text-[#9CA0AE]">
+                Copies
+              </span>
 
-              <span className="text-sm text-[#F4F4F6]">{copies}</span>
+              <span className="text-sm text-[#F4F4F6]">
+                {copies}
+              </span>
             </div>
 
             {/* Color */}
             <div className="flex items-center justify-between gap-4">
-              <span className="text-sm text-[#9CA0AE]">Color</span>
+              <span className="text-sm text-[#9CA0AE]">
+                Color
+              </span>
 
               <span className="text-sm text-[#F4F4F6]">
                 {colorMode === "bw" ? "Black & White" : "Color"}
@@ -303,29 +254,40 @@ export default function PrintPage() {
 
             {/* Paper size */}
             <div className="flex items-center justify-between gap-4">
-              <span className="text-sm text-[#9CA0AE]">Paper size</span>
+              <span className="text-sm text-[#9CA0AE]">
+                Paper size
+              </span>
 
-              <span className="text-sm text-[#F4F4F6]">{paperSize}</span>
+              <span className="text-sm text-[#F4F4F6]">
+                {paperSize}
+              </span>
             </div>
 
             {/* Instructions */}
             <div className="border-t border-[#1F1F27] pt-4">
-              <p className="text-sm text-[#9CA0AE]">Instructions</p>
+              <p className="text-sm text-[#9CA0AE]">
+                Instructions
+              </p>
 
               <p className="mt-2 text-sm leading-6 text-[#F4F4F6]">
-                {instructions.trim() ? instructions : "No special instructions"}
+                {instructions.trim()
+                  ? instructions
+                  : "No special instructions"}
               </p>
             </div>
           </div>
         </div>
-        {/*creat order*/}
+
+        {/* Create order */}
         <button
           type="button"
           onClick={() => {
             if (!file) {
               return;
             }
+
             const orderId = crypto.randomUUID();
+
             const order = {
               id: orderId,
               fileName: file.name,
@@ -350,3 +312,4 @@ export default function PrintPage() {
     </main>
   );
 }
+
