@@ -1,36 +1,88 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🖨️ PrintShop SaaS
 
-## Getting Started
+> A production-style SaaS platform for students and local print shops built during a 30-day full-stack bootcamp.
 
-First, run the development server:
+PrintShop lets students upload documents, configure print settings, and send print orders directly to nearby print shops through a modern web application.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## ✨ Current MVP
+
+* 📄 Upload PDF, PNG, and JPG files.
+* 🎯 Drag & drop file upload.
+* 📋 Print settings (copies, color mode, paper size).
+* 📝 Print instructions.
+* 📦 Live order summary.
+* 🆔 Client-side order object with unique ID and status.
+
+---
+
+## 🛠 Tech Stack
+
+| Frontend             | Backend (Coming Soon) |
+| -------------------- | --------------------- |
+| Next.js (App Router) | FastAPI               |
+| TypeScript           | Prisma                |
+| Tailwind CSS         | PostgreSQL            |
+| React Hooks          | OpenCV                |
+
+---
+
+## 📂 Project Structure
+
+```text
+src/
+├── app/
+│   ├── page.tsx
+│   ├── print/page.tsx
+│   ├── layout.tsx
+│   └── globals.css
+│
+├── components/      # Coming in Day 2
+├── lib/
+└── types/
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🚀 Roadmap
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### ✅ Day 1
 
-## Learn More
+* Landing page UI.
+* Upload workflow UI.
+* File validation.
+* Order summary.
 
-To learn more about Next.js, take a look at the following resources:
+### 🚧 Day 2
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+* Component architecture.
+* Reusable UI components.
+* TypeScript types.
+* Project cleanup.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 🔜 Coming Soon
 
-## Deploy on Vercel
+* Authentication.
+* Print shop dashboard.
+* QR code generation.
+* OCR with OpenCV.
+* Auto-delete after printing.
+* Deployment on Vercel.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 💻 Running Locally
+
+```bash
+pnpm install
+pnpm dev
+```
+
+Open `http://localhost:3000`.
+
+---
+
+## 🎯 Why I'm Building This
+
+I'm building PrintShop as a portfolio-quality SaaS project to learn modern full-stack development and create something that can be shown to recruiters, internship applications, and freelance clients.
