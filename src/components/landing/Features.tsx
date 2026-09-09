@@ -6,7 +6,7 @@ function FeatureCard({
   description: string;
 }) {
   return (
-    <div className="rounded-xl border border-[#1F1F27] bg-[#16161D] p-6">
+    <div className="rounded-xl border border-[#1F1F27] bg-[#16161D] p-6 transition-colors hover:border-[#6366F1]">
       <h3 className="text-lg font-medium text-[#F4F4F6]">{title}</h3>
 
       <p className="mt-2 text-sm leading-6 text-[#9CA0AE]">{description}</p>
