@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import UploadBox from "@/components/print/UploadBox";
+import PrintSettings from "@/components/print/PrintSettings";
 
 export default function PrintPage() {
   const [file, setFile] = useState<File | null>(null);
@@ -33,23 +34,49 @@ export default function PrintPage() {
     setFile(selectedFile);
   };
 
+  const handleCreateOrder = () => {
+    if (!file) {
+      alert("Please select a file first.");
+      return;
+    }
+
+    const order = {
+      id: crypto.randomUUID(),
+      fileName: file.name,
+      fileType: file.type,
+      fileSize: file.size,
+      copies,
+      colorMode,
+      paperSize,
+      instructions,
+      status: "PENDING",
+    };
+
+    console.log("Order created:", order);
+
+    alert("Order created successfully!");
+  };
+
   return (
-    <main className="min-h-screen bg-[#0A0A0F] text-[#F4F4F6]">
-      <div className="mx-auto max-w-4xl px-6 py-12">
+    <main className="min-h-screen bg-[#0A0A0F] px-6 py-16 text-[#F4F4F6]">
+      <div className="mx-auto max-w-5xl">
         {/* Header */}
-        <p className="text-sm font-medium text-[#A5ADFF]">
-          PrintShop
-        </p>
+        <div className="mb-10">
+          <p className="mb-3 text-sm font-medium text-[#A5ADFF]">
+            New print order
+          </p>
 
-        <h1 className="mt-3 text-3xl font-medium tracking-tight">
-          Create a print order
-        </h1>
+          <h1 className="text-4xl font-semibold tracking-tight">
+            Print your documents
+          </h1>
 
-        <p className="mt-3 text-[15px] leading-7 text-[#9CA0AE]">
-          Upload your document and configure how you want it printed.
-        </p>
+          <p className="mt-3 max-w-2xl text-[#9CA0AE]">
+            Upload your file, choose your print settings, and create
+            an order for your selected print shop.
+          </p>
+        </div>
 
-        {/* Upload area */}
+        {/* Upload */}
         <UploadBox
           file={file}
           isDragging={isDragging}
@@ -59,257 +86,86 @@ export default function PrintPage() {
           onDragEnd={() => setIsDragging(false)}
         />
 
-        {/* Print settings */}
-        <div className="mt-6 rounded-2xl border border-[#1F1F27] bg-[#16161D] p-6">
-          <p className="text-sm font-medium text-[#A5ADFF]">
-            Print settings
-          </p>
-
-          <h2 className="mt-2 text-lg font-medium text-[#F4F4F6]">
-            How many copies?
-          </h2>
-
-          {/* Copies selection button */}
-          <div className="mt-4 flex items-center gap-3">
-            <button
-              type="button"
-              onClick={() => setCopies(Math.max(1, copies - 1))}
-              className="flex h-9 w-9 items-center justify-center rounded-lg border border-[#2A2A35] text-[#F4F4F6] hover:border-[#3A38C8]"
-            >
-              −
-            </button>
-
-            <span className="flex h-9 min-w-12 items-center justify-center rounded-lg border border-[#2A2A35] bg-[#0A0A0F] text-sm">
-              {copies}
-            </span>
-
-            <button
-              type="button"
-              onClick={() => setCopies(copies + 1)}
-              className="flex h-9 w-9 items-center justify-center rounded-lg border border-[#2A2A35] text-[#F4F4F6] hover:border-[#3A38C8]"
-            >
-              +
-            </button>
-          </div>
-
-          {/* Colour selection */}
-          <div className="mt-8">
-            <h3 className="text-sm font-medium text-[#F4F4F6]">
-              Color
-            </h3>
-
-            <div className="mt-3 grid gap-3 sm:grid-cols-2">
-              <button
-                type="button"
-                onClick={() => setColorMode("bw")}
-                className={`rounded-lg border p-4 text-left transition-colors ${
-                  colorMode === "bw"
-                    ? "border-[#6366F1] bg-[#1C1B2E]"
-                    : "border-[#2A2A35] hover:border-[#3A38C8]"
-                }`}
-              >
-                <p className="text-sm font-medium text-[#F4F4F6]">
-                  Black & White
-                </p>
-
-                <p className="mt-1 text-xs text-[#9CA0AE]">
-                  Standard monochrome printing
-                </p>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setColorMode("color")}
-                className={`rounded-lg border p-4 text-left transition-colors ${
-                  colorMode === "color"
-                    ? "border-[#6366F1] bg-[#1C1B2E]"
-                    : "border-[#2A2A35] hover:border-[#3A38C8]"
-                }`}
-              >
-                <p className="text-sm font-medium text-[#F4F4F6]">
-                  Color
-                </p>
-
-                <p className="mt-1 text-xs text-[#9CA0AE]">
-                  Full-color printing
-                </p>
-              </button>
-            </div>
-          </div>
-
-          {/* Paper size */}
-          <div className="mt-8">
-            <h3 className="text-sm font-medium text-[#F4F4F6]">
-              Paper size
-            </h3>
-
-            <div className="mt-3 grid gap-3 sm:grid-cols-2">
-              <button
-                type="button"
-                onClick={() => setPaperSize("A4")}
-                className={`rounded-lg border p-4 text-left transition-colors ${
-                  paperSize === "A4"
-                    ? "border-[#6366F1] bg-[#1C1B2E]"
-                    : "border-[#2A2A35] hover:border-[#3A38C8]"
-                }`}
-              >
-                <p className="text-sm font-medium text-[#F4F4F6]">
-                  A4
-                </p>
-
-                <p className="mt-1 text-xs text-[#9CA0AE]">
-                  Standard document size
-                </p>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setPaperSize("A3")}
-                className={`rounded-lg border p-4 text-left transition-colors ${
-                  paperSize === "A3"
-                    ? "border-[#6366F1] bg-[#1C1B2E]"
-                    : "border-[#2A2A35] hover:border-[#3A38C8]"
-                }`}
-              >
-                <p className="text-sm font-medium text-[#F4F4F6]">
-                  A3
-                </p>
-
-                <p className="mt-1 text-xs text-[#9CA0AE]">
-                  Larger paper format
-                </p>
-              </button>
-            </div>
-          </div>
-
-          {/* Instructions */}
-          <div className="mt-8">
-            <label
-              htmlFor="instructions"
-              className="text-sm font-medium text-[#F4F4F6]"
-            >
-              Print instructions
-            </label>
-
-            <p className="mt-1 text-xs text-[#6B6F7E]">
-              Add any special instructions for the print shop.
-            </p>
-
-            <textarea
-              id="instructions"
-              value={instructions}
-              onChange={(event) =>
-                setInstructions(event.target.value)
-              }
-              placeholder="e.g. Print pages 1–5, double-sided..."
-              rows={4}
-              className="mt-3 w-full resize-none rounded-lg border border-[#2A2A35] bg-[#0A0A0F] px-4 py-3 text-sm text-[#F4F4F6] outline-none placeholder:text-[#6B6F7E] focus:border-[#6366F1]"
-            />
-          </div>
+        {/* Print Settings */}
+        <div className="mt-8">
+          <PrintSettings
+            copies={copies}
+            onCopiesChange={setCopies}
+            colorMode={colorMode}
+            onColorModeChange={setColorMode}
+            paperSize={paperSize}
+            onPaperSizeChange={setPaperSize}
+            instructions={instructions}
+            onInstructionsChange={setInstructions}
+          />
         </div>
 
-        {/* Order summary */}
-        <div className="mt-6 rounded-2xl border border-[#1F1F27] bg-[#16161D] p-6">
-          <p className="text-sm font-medium text-[#A5ADFF]">
-            Order summary
-          </p>
+        {/* Order Summary */}
+        <div className="mt-8 rounded-2xl border border-[#1F1F27] bg-[#16161D] p-6">
+          <div className="mb-6">
+            <h2 className="text-lg font-semibold">
+              Order Summary
+            </h2>
 
-          <h2 className="mt-2 text-lg font-medium text-[#F4F4F6]">
-            Review your print order
-          </h2>
+            <p className="mt-1 text-sm text-[#9CA0AE]">
+              Review your print order before creating it.
+            </p>
+          </div>
 
-          <div className="mt-6 space-y-4">
-            {/* Document */}
-            <div className="flex items-start justify-between gap-4">
-              <span className="text-sm text-[#9CA0AE]">
-                Document
-              </span>
+          <div className="space-y-4 text-sm">
+            <div className="flex items-center justify-between">
+              <span className="text-[#9CA0AE]">File</span>
 
-              <span className="max-w-xs truncate text-right text-sm text-[#F4F4F6]">
+              <span className="max-w-[60%] truncate text-right">
                 {file ? file.name : "No file selected"}
               </span>
             </div>
 
-            {/* Copies */}
-            <div className="flex items-center justify-between gap-4">
-              <span className="text-sm text-[#9CA0AE]">
-                Copies
-              </span>
+            <div className="flex items-center justify-between">
+              <span className="text-[#9CA0AE]">Copies</span>
 
-              <span className="text-sm text-[#F4F4F6]">
-                {copies}
+              <span>{copies}</span>
+            </div>
+
+            <div className="flex items-center justify-between">
+              <span className="text-[#9CA0AE]">Color</span>
+
+              <span>
+                {colorMode === "bw"
+                  ? "Black & White"
+                  : "Color"}
               </span>
             </div>
 
-            {/* Color */}
-            <div className="flex items-center justify-between gap-4">
-              <span className="text-sm text-[#9CA0AE]">
-                Color
-              </span>
+            <div className="flex items-center justify-between">
+              <span className="text-[#9CA0AE]">Paper</span>
 
-              <span className="text-sm text-[#F4F4F6]">
-                {colorMode === "bw" ? "Black & White" : "Color"}
-              </span>
+              <span>{paperSize}</span>
             </div>
 
-            {/* Paper size */}
-            <div className="flex items-center justify-between gap-4">
-              <span className="text-sm text-[#9CA0AE]">
-                Paper size
-              </span>
-
-              <span className="text-sm text-[#F4F4F6]">
-                {paperSize}
-              </span>
-            </div>
-
-            {/* Instructions */}
-            <div className="border-t border-[#1F1F27] pt-4">
-              <p className="text-sm text-[#9CA0AE]">
+            <div className="flex items-start justify-between gap-6">
+              <span className="text-[#9CA0AE]">
                 Instructions
-              </p>
+              </span>
 
-              <p className="mt-2 text-sm leading-6 text-[#F4F4F6]">
+              <span className="max-w-[60%] text-right">
                 {instructions.trim()
                   ? instructions
                   : "No special instructions"}
-              </p>
+              </span>
             </div>
           </div>
+
+          {/* Create Order */}
+          <button
+            type="button"
+            onClick={handleCreateOrder}
+            className="mt-8 w-full rounded-xl bg-[#6366F1] px-5 py-3 text-sm font-medium text-white transition-colors hover:bg-[#5558E8]"
+          >
+            Create Order
+          </button>
         </div>
-
-        {/* Create order */}
-        <button
-          type="button"
-          onClick={() => {
-            if (!file) {
-              return;
-            }
-
-            const orderId = crypto.randomUUID();
-
-            const order = {
-              id: orderId,
-              fileName: file.name,
-              fileType: file.type,
-              fileSize: file.size,
-              copies,
-              colorMode,
-              paperSize,
-              instructions: instructions.trim(),
-              status: "PENDING",
-            };
-
-            console.log("New print order:", order);
-
-            alert("Order ready to be created.");
-          }}
-          className="mt-6 w-full rounded-lg bg-[#6366F1] px-5 py-3 text-sm font-medium text-[#0A0A0F] transition-opacity hover:opacity-90"
-        >
-          Create order
-        </button>
       </div>
     </main>
   );
 }
-
