@@ -3,6 +3,7 @@
 import { useState } from "react";
 import UploadBox from "@/components/print/UploadBox";
 import PrintSettings from "@/components/print/PrintSettings";
+import OrderSummary from "@/components/print/OrderSummary";
 
 export default function PrintPage() {
   const [file, setFile] = useState<File | null>(null);
@@ -13,11 +14,7 @@ export default function PrintPage() {
   const [instructions, setInstructions] = useState("");
 
   const handleFile = (selectedFile: File) => {
-    const allowedTypes = [
-      "application/pdf",
-      "image/png",
-      "image/jpeg",
-    ];
+    const allowedTypes = ["application/pdf", "image/png", "image/jpeg"];
 
     if (!allowedTypes.includes(selectedFile.type)) {
       alert("Please select a PDF, PNG, or JPG file.");
@@ -71,8 +68,8 @@ export default function PrintPage() {
           </h1>
 
           <p className="mt-3 max-w-2xl text-[#9CA0AE]">
-            Upload your file, choose your print settings, and create
-            an order for your selected print shop.
+            Upload your file, choose your print settings, and create an order
+            for your selected print shop.
           </p>
         </div>
 
@@ -99,72 +96,14 @@ export default function PrintPage() {
             onInstructionsChange={setInstructions}
           />
         </div>
-
-        {/* Order Summary */}
-        <div className="mt-8 rounded-2xl border border-[#1F1F27] bg-[#16161D] p-6">
-          <div className="mb-6">
-            <h2 className="text-lg font-semibold">
-              Order Summary
-            </h2>
-
-            <p className="mt-1 text-sm text-[#9CA0AE]">
-              Review your print order before creating it.
-            </p>
-          </div>
-
-          <div className="space-y-4 text-sm">
-            <div className="flex items-center justify-between">
-              <span className="text-[#9CA0AE]">File</span>
-
-              <span className="max-w-[60%] truncate text-right">
-                {file ? file.name : "No file selected"}
-              </span>
-            </div>
-
-            <div className="flex items-center justify-between">
-              <span className="text-[#9CA0AE]">Copies</span>
-
-              <span>{copies}</span>
-            </div>
-
-            <div className="flex items-center justify-between">
-              <span className="text-[#9CA0AE]">Color</span>
-
-              <span>
-                {colorMode === "bw"
-                  ? "Black & White"
-                  : "Color"}
-              </span>
-            </div>
-
-            <div className="flex items-center justify-between">
-              <span className="text-[#9CA0AE]">Paper</span>
-
-              <span>{paperSize}</span>
-            </div>
-
-            <div className="flex items-start justify-between gap-6">
-              <span className="text-[#9CA0AE]">
-                Instructions
-              </span>
-
-              <span className="max-w-[60%] text-right">
-                {instructions.trim()
-                  ? instructions
-                  : "No special instructions"}
-              </span>
-            </div>
-          </div>
-
-          {/* Create Order */}
-          <button
-            type="button"
-            onClick={handleCreateOrder}
-            className="mt-8 w-full rounded-xl bg-[#6366F1] px-5 py-3 text-sm font-medium text-white transition-colors hover:bg-[#5558E8]"
-          >
-            Create Order
-          </button>
-        </div>
+        <OrderSummary
+          file={file}
+          copies={copies}
+          colorMode={colorMode}
+          paperSize={paperSize}
+          instructions={instructions}
+          onCreateOrder={handleCreateOrder}
+        />
       </div>
     </main>
   );
