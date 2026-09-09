@@ -56,7 +56,7 @@ export default function PrintPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#0A0A0F] px-6 py-16 text-[#F4F4F6]">
+    <main className="min-h-screen bg-[#0A0A0F] px-4 py-10 sm:px-6 sm:py-16 text-[#F4F4F6]">
       <div className="mx-auto max-w-5xl">
         {/* Header */}
         <div className="mb-10">
@@ -64,7 +64,7 @@ export default function PrintPage() {
             New print order
           </p>
 
-          <h1 className="text-4xl font-semibold tracking-tight">
+          <h1 className="text-3xl font-semibold sm:text-4xl tracking-tight">
             Print your documents
           </h1>
 

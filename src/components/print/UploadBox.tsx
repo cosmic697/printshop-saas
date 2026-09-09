@@ -27,7 +27,7 @@ export default function UploadBox({
 }: UploadBoxProps) {
   return (
     <div
-      className={`mt-10 rounded-2xl border border-dashed bg-[#16161D] px-6 py-14 text-center transition-colors ${
+      className={`mt-10 rounded-2xl border border-dashed bg-[#16161D] px-4 py-10 sm:px-6 sm:py-14 text-center transition-colors ${
         isDragging
           ? "border-[#6366F1] bg-[#1C1B2E]"
           : "border-[#2A2A35] hover:border-[#3A38C8]"
