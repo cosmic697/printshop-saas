@@ -4,6 +4,7 @@ import { useState } from "react";
 import UploadBox from "@/components/print/UploadBox";
 import PrintSettings from "@/components/print/PrintSettings";
 import OrderSummary from "@/components/print/OrderSummary";
+import { PrintOrder } from "@/types/order";
 
 export default function PrintPage() {
   const [file, setFile] = useState<File | null>(null);
@@ -37,7 +38,7 @@ export default function PrintPage() {
       return;
     }
 
-    const order = {
+    const order : PrintOrder= {
       id: crypto.randomUUID(),
       fileName: file.name,
       fileType: file.type,
@@ -96,6 +97,7 @@ export default function PrintPage() {
             onInstructionsChange={setInstructions}
           />
         </div>
+        {/*Order summary */}
         <OrderSummary
           file={file}
           copies={copies}
